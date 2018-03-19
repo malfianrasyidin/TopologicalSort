@@ -1,22 +1,16 @@
-﻿/* Tugas Besar Strategi Algoritma II */
-/* Topological Sort */
-/* Rifqi Rifaldi Utomo (13516) */
-/* M Alfian */ 
-/* Deborah Aprilia Josephine (13516152 */
-
-using System;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 
 namespace TopologicalSort
 {
-    public class ReadFile
+    internal class ReadFile
     {
         private string FilePath;
+
         public ReadFile(string S)
         {
             FilePath = S;
         }
+
         public Graph OpenFile()
         {
             Graph G = new Graph();
@@ -33,20 +27,31 @@ namespace TopologicalSort
                     //Console.WriteLine("Array ke-{0}, indeks node ke-{1}, valuenya {2}", k, i, s);
                     if (k == 0)
                     {
-                        G.addNodes(stringPerLineComma[k].Trim());
+                        G.AddNodes(stringPerLineComma[k].Trim());
                     }
                     else
                     {
-                        G.addPrereqNodes(i, stringPerLineComma[k].Trim());
+                        G.AddPrereqNodes(i, stringPerLineComma[k].Trim());
                     }
                 }
             }
             sr.Close();
             return G;
         }
-        public void generatePostReq()
-        {
 
+        public void GeneratePostReq(Graph G)
+        {
+            //iterasi dari awal graph
+            for (int i = 0; i < G.GetNodesCount(); ++i)
+            {
+                //untuk setiap graf, diiterasi prereqnya.
+                for (int j = 0; j < G.GetNodes(i).GetPrereqCount(); ++j)
+                {
+                    //untuk setiap prereq, dimasukkin si node ke postreqnya
+                    G.AddPostreqNodes(G.GetNodesIdx(G.GetNodes(i).GetPrereq(j)), (G.GetNodes(i).GetVal()));
+                    //Console.WriteLine("NYAMPE PLZZ");
+                }
+            }
         }
     }
 }
