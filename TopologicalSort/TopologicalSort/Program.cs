@@ -101,11 +101,11 @@ namespace TopologicalSort
         {
             return Postreq.IndexOf(Search);
         }
-        public void setFirstVisit(int F)
+        public void setFirstVisit(bool F)
         {
             FirstVisit = F;
         }
-        public void setLastVisit(int L)
+        public void setLastVisit(bool L)
         {
             LastVisit = L;
         }
