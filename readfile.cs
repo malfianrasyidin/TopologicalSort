@@ -9,14 +9,12 @@ namespace DirectedAcyclicGraph
 {
     public class ReadFile{
         private string FilePath;
-        private char * ReadString;
-        private int CurrChar;
         public ReadFile(string S){
-            FileName = S;
+            FilePath = S;
         }
-        public Graph OpenFile(string S){
+        public Graph OpenFile(){
             Graph G = new Graph();
-            StreamReader sr = new StreamReader(path);
+            StreamReader sr = new StreamReader(FilePath);
             while(!sr.EndOfStream){
                 string line = sr.ReadLine();
                 string[] linePerLine = line.Split('.');
