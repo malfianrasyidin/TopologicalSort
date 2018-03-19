@@ -75,11 +75,11 @@ namespace TopologicalSort
         {
             return Value;
         }
-        public int getFirstVisit()
+        public bool getFirstVisit()
         {
             return FirstVisit;
         }
-        public int getLastVisit()
+        public bool getLastVisit()
         {
             return LastVisit;
         }
