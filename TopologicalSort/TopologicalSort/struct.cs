@@ -132,6 +132,10 @@ namespace TopologicalSort
         {
             Nodes[Idx].addPrereq(S);
         }
+        public void addPostreqNodes(int Idx, string S)
+        {
+            Nodes[Idx].addPostreq(S);
+        }
         public void printGraph()
         {
             Console.WriteLine("====== GRAPH ======\n");
