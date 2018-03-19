@@ -3,10 +3,10 @@
 /* Muhammad Alfian Rasyidin 13516104 */
 /* Deborah Aprilia Josephine 13516152 */
 
+using System ;
+using System.Collections.Generic;
 namespace DirectedAcyclicGraph
 {
-    using System ;
-    using System.Collections.Generic;
     public class Node {
         private string Value ;
         private List<string>[] Prereq;
@@ -52,7 +52,7 @@ namespace DirectedAcyclicGraph
                 if (node != Prereq.Last()){
                     Console.WriteLine(", ")
                 }
-;            }
+            }
         }
     }
     public class Graph {
