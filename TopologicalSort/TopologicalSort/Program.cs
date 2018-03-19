@@ -62,7 +62,7 @@ namespace TopologicalSort
                 for (int j = 0; j < G.GetNodes(i).GetPrereqCount(); ++j)
                 {
                     //untuk setiap prereq, dimasukkin si node ke postreqnya
-                    G.AddPostreqNodes(G.GetNodesIdx(G.GetNodes(i).GetPrereq(j)) , (G.GetNodes(i).GetVal()));
+                    G.AddPostreqNodes(G.GetNodesIdx(G.GetNodes(i).GetPrereq(j)), (G.GetNodes(i).GetVal()));
                     //Console.WriteLine("NYAMPE PLZZ");
                 }
                 //caranya pertama lu harus 
@@ -123,7 +123,24 @@ namespace TopologicalSort
             } while (belumSelesai);
         }
     }
+    public class DFS
+    {
+        private static int timestamp;
+        private List<string> reverseorder = new List<string>();
+        public static int GetTimestamp()
+        {
+            return timestamp;
+        }
+        public static void SetTimestamp(int s)
+        {
+            timestamp = s;
+        }
+        public DFS(Graph _G)
+        {
+            Graph G = _G;
 
+        }
+    }
     public class Node
     {
         private string Value;
