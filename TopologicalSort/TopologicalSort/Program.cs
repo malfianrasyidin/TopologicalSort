@@ -14,8 +14,9 @@ namespace TopologicalSort
             /* Print Graph */
             Graph G = new Graph();
             G = R.OpenFile();
-            G.GeneratePostReq();
+            R.GeneratePostReq(G);
             G.PrintGraph();
+            BFS bfs = new BFS(G);
         }
     }
     public class ReadFile
@@ -52,6 +53,75 @@ namespace TopologicalSort
             sr.Close();
             return G;
         }
+        public void GeneratePostReq(Graph G)
+        {
+            //iterasi dari awal graph
+            for (int i = 0; i < G.GetNodesCount(); ++i)
+            {
+                //untuk setiap graf, diiterasi prereqnya.
+                for (int j = 0; j < G.GetNodes(i).GetPrereqCount(); ++j)
+                {
+                    //untuk setiap prereq, dimasukkin si node ke postreqnya
+                    G.AddPostreqNodes(G.GetNodesIdx(G.GetNodes(i).GetPrereq(j)) , (G.GetNodes(i).GetVal()));
+                    //Console.WriteLine("NYAMPE PLZZ");
+                }
+                //caranya pertama lu harus 
+            }
+        }
+    }
+    public class BFS
+    {
+        public BFS(Graph _G)
+        {
+            Graph G = _G;
+            List<string> mkTanpaPrereq = new List<string>();
+            int semesterSaatIni = 1;
+            bool belumSelesai = true; //belum selesai = masih ada yang listnya gak kosong
+            do
+            {
+                //cari ada kah yang matkulnya gak ada prereq
+                for (int i = 0; i < G.GetNodesCount(); ++i)
+                {
+                    if ((G.GetNodes(i).GetPrereqCount()) == 0)
+                    {
+                        mkTanpaPrereq.Add(G.GetNodes(i).GetVal());
+                    }
+                } // didapatkan semua matkul yang gak ada prereq nya
+                // mengeluarkan isi dari mkTanpaPrereq
+                Console.WriteLine("Semester " + semesterSaatIni.ToString() + " :");
+                for (int i = 0; i < mkTanpaPrereq.Count(); ++i)
+                {
+                    Console.WriteLine(mkTanpaPrereq[i]);
+                } // semua prereq sudah dihapus
+                  //menghapus semua preReq yang mengandung mkTanpaPrereq
+                for (int i = 0; i < mkTanpaPrereq.Count(); ++i)
+                {
+                    for (int j = 0; j < G.GetNodesCount(); ++j)
+                    {
+                        G.DeletePrereqOnNodeWithString(j, mkTanpaPrereq[i]);
+                    }
+                } // semua prereq sudah dihapus
+
+                // menghapus mkTanpaPrereq dari Graph
+                for (int i = 0; i < mkTanpaPrereq.Count(); ++i)
+                {
+                    int j = G.GetNodesIdx(mkTanpaPrereq[i]);
+                    if (j != -1)
+                    {
+                        G.NodesRemoveAt(j);
+                    }
+                } // mkTanpaPrereq sudah dihapus dari Graph
+                  // menghapus isi dari mkTanpaPrereq (biar ntar terisi yang baru lagi)
+                mkTanpaPrereq.Clear();
+                // mengecek apakah masih ada node pada graph G
+                if (G.GetNodesCount() == 0)
+                {
+                    belumSelesai = false;
+                }
+                // menambah semester saat ini jadi semester selanjutnya
+                ++semesterSaatIni;
+            } while (belumSelesai);
+        }
     }
 
     public class Node
@@ -81,23 +151,23 @@ namespace TopologicalSort
         {
             return LastVisit;
         }
+        public int GetPrereqCount()
+        {
+            return Prereq.Count();
+        }
         public string GetPrereq(int Idx)
         {
             /* Elemen list dimulai dari 0 */
-            return Prereq[Idx].ToString();
+            return Prereq[Idx];
         }
         public int GetPrereqIdx(string Search)
         {
             return Prereq.IndexOf(Search);
         }
-        public int GetPrereqCount()
-        {
-            return Prereq.Count;
-        }
         public string GetPostreq(int Idx)
         {
             /* Elemen list dimulai dari 0 */
-            return Postreq[Idx].ToString();
+            return Postreq[Idx];
         }
         public int GetPostreqIdx(string Search)
         {
@@ -157,7 +227,7 @@ namespace TopologicalSort
 
     public class Graph
     {
-        public List<Node> Nodes;
+        private List<Node> Nodes;
         public Graph()
         {
             Nodes = new List<Node>();
@@ -166,10 +236,26 @@ namespace TopologicalSort
         {
             return Nodes[Idx];
         }
+        public void AddPostreqOnNodeWithString(int Idx, string s)
+        {
+            //intinya adalah menambah postreq dengan nilai s pada node ke idx
+            Nodes[Idx].AddPostreq(s);
+        }
+        public void DeletePrereqOnNodeWithString(int Idx, string s)
+        {
+            //intinya adalah menghapus prereq dengan nilai s pada node ke idx
+            Nodes[Idx].DeletePrereq(s);
+        }
         public int GetNodesIdx(string S)
         {
-            Node N = new Node(S);
-            return Nodes.IndexOf(N);
+            for (int i = 0; i < Nodes.Count(); ++i)
+            {
+                if (Nodes[i].GetVal().Equals(S, StringComparison.Ordinal))
+                {
+                    return i;
+                }
+            }
+            return -1;
         }
         public void SetNodes(int idx, Node N)
         {
@@ -188,6 +274,10 @@ namespace TopologicalSort
         {
             Nodes[Idx].AddPostreq(S);
         }
+        public int GetNodesCount()
+        {
+            return Nodes.Count;
+        }
         public void PrintGraph()
         {
             Console.WriteLine("====== GRAPH ======\n");
@@ -196,10 +286,14 @@ namespace TopologicalSort
                 Console.WriteLine("\nNodes ke-{0} dengan nilai {1}", i, GetNodes(i).GetVal());
                 Console.WriteLine("Prerequisite : ");
                 Nodes[i].PrintAllPrereq();
-                Console.WriteLine("Postrequisite : ");
+                Console.WriteLine("\nPostrequisite : ");
                 Nodes[i].printAllPostreq();
             }
             Console.WriteLine("");
+        }
+        public void NodesRemoveAt(int Idx)
+        {
+            Nodes.RemoveAt(Idx);
         }
     }
 }
