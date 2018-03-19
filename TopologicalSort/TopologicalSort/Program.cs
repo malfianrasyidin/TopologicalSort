@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Collections.Generic;
 
 class ViewerSample
@@ -70,7 +69,8 @@ class ViewerSample
             foreach (var node in Prereq)
             {
                 Console.Write(node);
-                if (Convert.ToBoolean(string.Compare(node,Prereq[Prereq.Count - 1]))){
+                if (Convert.ToBoolean(string.Compare(node, Prereq[Prereq.Count - 1])))
+                {
                     Console.Write(", ");
                 }
             }
