@@ -14,7 +14,7 @@ namespace TopologicalSort
             /* Print Graph */
             Graph G = new Graph();
             G = R.OpenFile();
-            G.printGraph();
+            G.PrintGraph();
         }
     }
     public class ReadFile
@@ -40,18 +40,18 @@ namespace TopologicalSort
                     //Console.WriteLine("Array ke-{0}, indeks node ke-{1}, valuenya {2}", k, i, s);
                     if (k == 0)
                     {
-                        G.addNodes(stringPerLineComma[k].Trim());
+                        G.AddNodes(stringPerLineComma[k].Trim());
                     }
                     else
                     {
-                        G.addPrereqNodes(i, stringPerLineComma[k].Trim());
+                        G.AddPrereqNodes(i, stringPerLineComma[k].Trim());
                     }
                 }
             }
             sr.Close();
             return G;
         }
-        public void generatePostReq()
+        public void GeneratePostReq()
         {
 
         }
@@ -71,19 +71,19 @@ namespace TopologicalSort
             FirstVisit = false;
             LastVisit = false;
         }
-        public string getVal()
+        public string GetVal()
         {
             return Value;
         }
-        public bool getFirstVisit()
+        public bool GetFirstVisit()
         {
             return FirstVisit;
         }
-        public bool getLastVisit()
+        public bool GetLastVisit()
         {
             return LastVisit;
         }
-        public string getPrereq(int Idx)
+        public string GetPrereq(int Idx)
         {
             /* Elemen list dimulai dari 0 */
             return Prereq[Idx].ToString();
@@ -97,35 +97,35 @@ namespace TopologicalSort
             /* Elemen list dimulai dari 0 */
             return Postreq[Idx].ToString();
         }
-        public int getPostreqIdx(string Search)
+        public int GetPostreqIdx(string Search)
         {
             return Postreq.IndexOf(Search);
         }
-        public void setFirstVisit(bool F)
+        public void SetFirstVisit(bool F)
         {
             FirstVisit = F;
         }
-        public void setLastVisit(bool L)
+        public void SetLastVisit(bool L)
         {
             LastVisit = L;
         }
-        public void addPrereq(string S)
+        public void AddPrereq(string S)
         {
             Prereq.Add(S);
         }
-        public void deletePrereq(string S)
+        public void DeletePrereq(string S)
         {
             Prereq.Remove(S);
         }
-        public void addPostreq(string S)
+        public void AddPostreq(string S)
         {
             Postreq.Add(S);
         }
-        public void deletePostreq(string S)
+        public void DeletePostreq(string S)
         {
             Postreq.Remove(S);
         }
-        public void printAllPrereq()
+        public void PrintAllPrereq()
         {
             foreach (var node in Prereq)
             {
@@ -156,40 +156,40 @@ namespace TopologicalSort
         {
             Nodes = new List<Node>();
         }
-        public Node getNodes(int Idx)
+        public Node GetNodes(int Idx)
         {
             return Nodes[Idx];
         }
-        public int getNodesIdx(string S)
+        public int GetNodesIdx(string S)
         {
             Node N = new Node(S);
             return Nodes.IndexOf(N);
         }
-        public void setNodes(int idx, Node N)
+        public void SetNodes(int idx, Node N)
         {
             Nodes[idx] = N;
         }
-        public void addNodes(string S)
+        public void AddNodes(string S)
         {
             Node N = new Node(S);
             Nodes.Add(N);
         }
-        public void addPrereqNodes(int Idx, string S)
+        public void AddPrereqNodes(int Idx, string S)
         {
-            Nodes[Idx].addPrereq(S);
+            Nodes[Idx].AddPrereq(S);
         }
-        public void addPostreqNodes(int Idx, string S)
+        public void AddPostreqNodes(int Idx, string S)
         {
-            Nodes[Idx].addPostreq(S);
+            Nodes[Idx].AddPostreq(S);
         }
-        public void printGraph()
+        public void PrintGraph()
         {
             Console.WriteLine("====== GRAPH ======\n");
             for (int i = 0; i < Nodes.Count; i++)
             {
-                Console.WriteLine("\nNodes ke-{0} dengan nilai {1}", i, getNodes(i).getVal());
+                Console.WriteLine("\nNodes ke-{0} dengan nilai {1}", i, GetNodes(i).GetVal());
                 Console.WriteLine("Prerequisite : ");
-                Nodes[i].printAllPrereq();
+                Nodes[i].PrintAllPrereq();
             }
             Console.WriteLine("");
         }
