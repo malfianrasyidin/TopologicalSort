@@ -51,11 +51,8 @@ namespace TopologicalSort
             sr.Close();
             return G;
         }
-        public void generatePostReq()
-        {
-
-        }
     }
+
     public class Node
     {
         private string Value;
@@ -192,6 +189,10 @@ namespace TopologicalSort
                 Nodes[i].printAllPrereq();
             }
             Console.WriteLine("");
+        }
+        public void generatePostReq()
+        {
+
         }
     }
 }
