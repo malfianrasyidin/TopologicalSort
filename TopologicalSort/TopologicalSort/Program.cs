@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Linq;
 
 class ViewerSample
 {
@@ -37,12 +38,56 @@ class ViewerSample
         Graph G = new Graph();
         G = R.OpenFile();
         G.printGraph();
+        BFS(G);
+    }
+
+    public static void BFS(Graph G)
+    {
+        List<string> mkTanpaPrereq = new List<string>();
+        int semesterSaatIni = 1;
+        bool belumSelesai = true; //belum selesai = masih ada yang listnya gak kosong
+	    do {
+		    //cari ada kah yang matkulnya gak ada prereq
+    	    for (int i = 0; i< G.Nodes.Count; ++i) {
+    		    if (!(G.Nodes[i].Prereq.Any())) {
+    			    mkTanpaPrereq.Add(G.Nodes[i].getVal());
+    		    }
+            } // didapatkan semua matkul yang gak ada prereq nya
+    	    //menghapus semua preReq yang mengandung mkTanpaPrereq
+    	    for (int i = 0; i<mkTanpaPrereq.Count(); ++i) {
+    		    for (int j = 0; j<G.Nodes.Count(); ++j) {
+    			    G.Nodes[j].deletePrereq(mkTanpaPrereq[i]);
+    		    }
+    	    } // semua prereq sudah dihapus
+    	    // mengeluarkan isi dari mkTanpaPrereq
+    	    Console.WriteLine("Semester " + semesterSaatIni.ToString() + " :");
+    	    for (int i = 0; i<mkTanpaPrereq.Count(); ++i) {
+    		    Console.WriteLine(mkTanpaPrereq[i]);
+    	    } // semua prereq sudah dihapus
+    	
+    	    // menghapus mkTanpaPrereq dari Graph
+    	    for (int i = 0; i<mkTanpaPrereq.Count(); ++i) {
+                int j = G.getNodesIdx(mkTanpaPrereq[i]);
+                if (j != -1)
+                {
+                    G.Nodes.RemoveAt(j);
+                }
+    	    } // mkTanpaPrereq sudah dihapus dari Graph
+    	    // menghapus isi dari mkTanpaPrereq (biar ntar terisi yang baru lagi)
+    	    mkTanpaPrereq.Clear();
+    	    // mengecek apakah masih ada node pada graph G
+    	    if (!(G.Nodes.Any())) {
+    		    belumSelesai = false;
+    	    }
+    	    // menambah semester saat ini jadi semester selanjutnya
+    	    ++semesterSaatIni;
+        } while (belumSelesai);
     }
 
     public class Node
     {
         private string Value;
-        private List<string> Prereq = new List<string>();
+        public List<string> Prereq = new List<string>();
         private int FirstVisit;
         private int LastVisit;
         public Node(string S)
