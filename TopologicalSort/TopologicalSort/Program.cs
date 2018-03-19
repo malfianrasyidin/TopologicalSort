@@ -14,10 +14,16 @@ namespace TopologicalSort
             ReadFile R = new ReadFile("test.txt");
             /* Print Graph */
             Graph G = new Graph();
+            Graph GDFS = new Graph();
+            Graph GBFS = new Graph();
             G = R.OpenFile();
+            GDFS = R.OpenFile();
+            GBFS = R.OpenFile();
             R.GeneratePostReq(G);
+            R.GeneratePostReq(GDFS);
+            R.GeneratePostReq(GBFS);
             G.PrintGraph();
-            BFS bfs = new BFS(G);
+            BFS bfs = new BFS(GBFS);
         }
     }
     public class ReadFile
@@ -74,6 +80,7 @@ namespace TopologicalSort
     {
         public BFS(Graph _G)
         {
+            Console.WriteLine("YAHUT");
             Graph G = _G;
             List<string> mkTanpaPrereq = new List<string>();
             int semesterSaatIni = 1;
@@ -99,7 +106,7 @@ namespace TopologicalSort
                 {
                     for (int j = 0; j < G.GetNodesCount(); ++j)
                     {
-                        G.DeletePrereqOnNodeWithString(j, mkTanpaPrereq[i]);
+                        G.DeletePrereqNodes(j, mkTanpaPrereq[i]);
                     }
                 } // semua prereq sudah dihapus
 
@@ -124,6 +131,25 @@ namespace TopologicalSort
             } while (belumSelesai);
         }
     }
+    public class DFS
+    {
+        private static int timestamp;
+        private List<string> reverseorder = new List<string>();
+        public static int GetTimestamp()
+        {
+            return timestamp;
+        }
+        public static void SetTimestamp(int s)
+        {
+            timestamp = s;
+        }
+        public DFS(Graph _G)
+        {
+            Graph G = _G;
+
+        }
+    }
+
     public class Node
     {
         private string Value;
@@ -237,7 +263,7 @@ namespace TopologicalSort
             //intinya adalah menambah postreq dengan nilai s pada node ke idx
             Nodes[Idx].AddPostreq(s);
         }
-        public void DeletePrereqOnNodeWithString(int Idx, string s)
+        public void DeletePrereqNodes(int Idx, string s)
         {
             //intinya adalah menghapus prereq dengan nilai s pada node ke idx
             Nodes[Idx].DeletePrereq(s);
