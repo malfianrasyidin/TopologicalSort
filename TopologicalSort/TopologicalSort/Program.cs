@@ -14,7 +14,7 @@ namespace TopologicalSort
             Graph G = new Graph();
             G = R.OpenFile();
             R.GeneratePostReq(G);
-            G.PrintGraph();
+            G.Draw();
             BFS bfs = new BFS(G);
             DFS dfs = new DFS(G);
             dfs.Execute();
