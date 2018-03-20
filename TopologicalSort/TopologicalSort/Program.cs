@@ -15,6 +15,7 @@ namespace TopologicalSort
             G = R.OpenFile();
             R.GeneratePostReq(G);
             G.PrintGraph();
+            BFS bfs = new BFS(G);
             DFS dfs = new DFS(G);
             dfs.Execute();
             Console.WriteLine("--------");
@@ -26,7 +27,6 @@ namespace TopologicalSort
             {
                 Console.WriteLine("Graf kosong");
             }
-            BFS bfs = new BFS(G);
         }
     }  
 }

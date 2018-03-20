@@ -15,6 +15,11 @@ namespace TopologicalSort
             Nodes = new List<Node>();
         }
 
+        public Graph(Graph _Graph)
+        {
+            Nodes = new List<Node>(_Graph.Nodes);
+        }
+
         public static Graph DeepClone<Graph>(Graph obj)
         {
             Console.WriteLine("DEEP");

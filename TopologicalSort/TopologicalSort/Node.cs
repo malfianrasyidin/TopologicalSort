@@ -17,6 +17,22 @@ namespace TopologicalSort
             List<string> Postreq = new List<string>();
         }
 
+        public Node(Node _Node)
+        {
+            Value = _Node.Value;
+            List<string> Prereq = new List<string>();
+            List<string> Postreq = new List<string>();
+            for (int i = 0; i < _Node.GetPrereqCount(); ++i)
+            {
+                AddPrereq(_Node.GetPrereq(i));
+            }
+            for (int i = 0; i < _Node.GetPostreqCount(); ++i)
+            {
+                AddPostreq(_Node.GetPostreq(i));
+            }
+
+        }
+
         public string GetVal()
         {
             return Value;
