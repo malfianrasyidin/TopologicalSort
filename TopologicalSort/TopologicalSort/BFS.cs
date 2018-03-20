@@ -14,7 +14,8 @@ namespace TopologicalSort
 
         public void Execute(Graph _G)
         {
-            Graph G = _G;
+            //Graph G = _G;
+            Graph G = new Graph(_G);
             List<string> mkTanpaPrereq = new List<string>();
             int semesterSaatIni = 1;
             bool belumSelesai = true; //belum selesai = masih ada yang listnya gak kosong
