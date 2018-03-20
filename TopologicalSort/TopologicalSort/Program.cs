@@ -26,9 +26,7 @@ namespace TopologicalSort
             {
                 Console.WriteLine("Graf kosong");
             }
-            
             BFS bfs = new BFS(G);
-            
         }
     }  
 }
