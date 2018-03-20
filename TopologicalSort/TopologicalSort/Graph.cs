@@ -147,7 +147,7 @@ namespace TopologicalSort
             form.Controls.Add(viewer);
             form.ResumeLayout();
             //show the form 
-            form.ShowDialog();
+            //form.ShowDialog();
         }
 
         public void NodesRemoveAt(int Idx)

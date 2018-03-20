@@ -14,11 +14,12 @@ namespace TopologicalSort
             Graph G = new Graph();
             G = R.OpenFile();
             R.GeneratePostReq(G);
-            G.Draw();
-            BFS bfs = new BFS(G);
+            G.PrintGraph();
+            //BFS bfs = new BFS(G);
             DFS dfs = new DFS(G);
-            dfs.Execute();
             Console.WriteLine("--------");
+            dfs.Execute(G);
+            
             if (G.GetNodesCount()>0)
             {
                 G.PrintGraph();

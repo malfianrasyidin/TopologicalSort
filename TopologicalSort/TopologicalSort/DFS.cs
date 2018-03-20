@@ -30,25 +30,26 @@ namespace TopologicalSort
             }
         }
 
-        public void Execute()
+        public void Execute(Graph _graph)
         {
             InitFirstSemester();
             for (int i = 0; i < first_semester.Count; i++)
             {
+                //Console.WriteLine(first_semester.ToString());
                 string current = first_semester[i];
                 //Console.WriteLine(current);
-                ExecuteDFS(graph, current);
+                ExecuteDFS(_graph, current);
             }
             Print();
-            Draw();
-            
+            Draw(_graph);
+            FinalDraw(_graph);
         }
 
         public void ExecuteDFS(Graph graph, string current)
         {
             timestamps.Add(current);
             int idx = graph.GetNodesIdx(current);
-            //Console.WriteLine("idx" + idx.ToString());
+            Console.WriteLine("idx" + idx.ToString());
             Node x = graph.GetNodes(idx);
             if (x.GetPostreqCount() != 0)
             {
@@ -97,7 +98,46 @@ namespace TopologicalSort
             return found;
         }
 
-        public void Draw()
+        public void Draw(Graph _graph)
+        {
+            int i = 0;
+            while(i<timestamps.Count-1)
+            {
+                //create a form 
+                System.Windows.Forms.Form form = new System.Windows.Forms.Form();
+                //create a viewer object 
+                Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
+                //create a graph object 
+                Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
+
+                //create the graph content 
+                for (int idx = 0; idx < _graph.GetNodesCount(); idx++)
+                {
+                    for (int j = 0; j < _graph.GetNodes(idx).GetPostreqCount(); j++)
+                    {
+                        graph.AddEdge(_graph.GetNodes(idx).GetVal(), _graph.GetNodes(idx).GetPostreq(j));
+                    }
+                }
+                //graph.AddEdge(timestamps[i], timestamps[i+1]);
+                //bind the graph to the viewer 
+                viewer.Graph = graph;
+                //associate the viewer with the form 
+                form.SuspendLayout();
+                viewer.Dock = System.Windows.Forms.DockStyle.Fill;
+                form.WindowState = FormWindowState.Maximized;
+                form.Controls.Add(viewer);
+                form.ResumeLayout();
+                graph.FindNode(timestamps[i]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Red;
+                graph.FindNode(timestamps[i+1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Green;
+                //show the form 
+                form.ShowDialog();
+                graph.FindNode(timestamps[i]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.White;
+                graph.FindNode(timestamps[i+1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.White;
+                i++;
+            }
+        }
+
+        public void FinalDraw(Graph _graph)
         {
             //create a form 
             System.Windows.Forms.Form form = new System.Windows.Forms.Form();
@@ -105,37 +145,25 @@ namespace TopologicalSort
             Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
             //create a graph object 
             Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
-            //create the graph content 
-            int i = 0;
-            while(i<timestamps.Count-1)
+            int i = timestamps.Count - 1;
+            while (i > 0)
             {
-                graph.AddEdge(timestamps[i], timestamps[i+1]);
-                //bind the graph to the viewer 
-                viewer.Graph = graph;
-                //associate the viewer with the form 
-                form.SuspendLayout();
-                viewer.Dock = System.Windows.Forms.DockStyle.Fill;
-                Button btn1 = new Button();
-                btn1.Width = 170;
-                btn1.Height = 30;
-                btn1.Text = "Next";
-                btn1.ForeColor = Color.White;
-                form.WindowState = FormWindowState.Maximized;
-                form.Controls.Add(btn1);
-                form.Controls.Add(viewer);
-                form.ResumeLayout();
-                //show the form 
-                form.ShowDialog();
-                i++;
+                if (!(timestamps[i].Equals(timestamps[i - 1], StringComparison.Ordinal)))
+                {
+                    graph.AddEdge(timestamps[i], timestamps[i - 1]).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
+                }
+                i--;
             }
-            //graph.AddEdge("B", "C");
-            //graph.AddEdge("A", "C").Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
-            //graph.FindNode("A").Attr.FillColor = Microsoft.Msagl.Drawing.Color.Magenta;
-            //graph.FindNode("B").Attr.FillColor = Microsoft.Msagl.Drawing.Color.MistyRose;
-            //Microsoft.Msagl.Drawing.Node c = graph.FindNode(timestamps[0]);
-            //c.Attr.FillColor = Microsoft.Msagl.Drawing.Color.PaleGreen;
-            //c.Attr.Shape = Microsoft.Msagl.Drawing.Shape.Diamond;
-            
+            //bind the graph to the viewer 
+            viewer.Graph = graph;
+            //associate the viewer with the form 
+            form.SuspendLayout();
+            viewer.Dock = System.Windows.Forms.DockStyle.Fill;
+            form.WindowState = FormWindowState.Maximized;
+            form.Controls.Add(viewer);
+            form.ResumeLayout();
+            //show the form 
+            form.ShowDialog();
         }
     }
 }
