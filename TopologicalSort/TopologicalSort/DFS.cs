@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace TopologicalSort
@@ -14,14 +13,14 @@ namespace TopologicalSort
         public DFS(Graph _graph)
         {
             graph = _graph;
-            number_of_nodes = graph.Count();
+            number_of_nodes = graph.GetNodesCount();
             timestamps = new List<string>();
             first_semester = new List<string>();
         }
 
         public void InitFirstSemester()
         {
-            for (int i = 0; i < graph.Count(); i++)
+            for (int i = 0; i < graph.GetNodesCount(); i++)
             {
                 if (graph.GetNodes(i).GetPrereqCount() == 0)
                 {
@@ -35,31 +34,23 @@ namespace TopologicalSort
             InitFirstSemester();
             for (int i = 0; i < first_semester.Count; i++)
             {
-                //Console.WriteLine(first_semester.ToString());
                 string current = first_semester[i];
-                //Console.WriteLine(current);
                 ExecuteDFS(_graph, current);
             }
-            Print();
             Draw(_graph);
-            FinalDraw(_graph);
         }
 
         public void ExecuteDFS(Graph graph, string current)
         {
             timestamps.Add(current);
             int idx = graph.GetNodesIdx(current);
-            Console.WriteLine("idx" + idx.ToString());
             Node x = graph.GetNodes(idx);
             if (x.GetPostreqCount() != 0)
             {
-                //Console.WriteLine(x.GetNumberPostReq());
                 for (int i = 0; i < x.GetPostreqCount(); i++)
                 {
-                    //Console.WriteLine(i);
                     if (!HasVisited(x.GetPostreq(i)))
                     {
-                        //Console.WriteLine("yes");
                         ExecuteDFS(graph, x.GetPostreq(i));
                     }
                 }
@@ -83,7 +74,6 @@ namespace TopologicalSort
         {
             bool found = false;
             int i = 0;
-            //Console.WriteLine("here");
             while (!found && i < timestamps.Count)
             {
                 if (timestamps[i].Equals(current, StringComparison.Ordinal))
@@ -101,69 +91,37 @@ namespace TopologicalSort
         public void Draw(Graph _graph)
         {
             int i = 0;
-            while(i<timestamps.Count-1)
+            while(i<timestamps.Count)
             {
-                //create a form 
                 System.Windows.Forms.Form form = new System.Windows.Forms.Form();
-                //create a viewer object 
                 Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
-                //create a graph object 
                 Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
 
-                //create the graph content 
                 for (int idx = 0; idx < _graph.GetNodesCount(); idx++)
                 {
-                    for (int j = 0; j < _graph.GetNodes(idx).GetPostreqCount(); j++)
+                    if (_graph.GetNodes(idx).GetPostreqCount() == 0)
                     {
-                        graph.AddEdge(_graph.GetNodes(idx).GetVal(), _graph.GetNodes(idx).GetPostreq(j));
+                        graph.AddNode(_graph.GetNodes(idx).GetVal());
+                    } else
+                    {
+                        for (int j = 0; j < _graph.GetNodes(idx).GetPostreqCount(); j++)
+                        {
+                            graph.AddEdge(_graph.GetNodes(idx).GetVal(), _graph.GetNodes(idx).GetPostreq(j));
+                        }
                     }
                 }
-                //graph.AddEdge(timestamps[i], timestamps[i+1]);
-                //bind the graph to the viewer 
                 viewer.Graph = graph;
-                //associate the viewer with the form 
                 form.SuspendLayout();
                 viewer.Dock = System.Windows.Forms.DockStyle.Fill;
                 form.WindowState = FormWindowState.Maximized;
                 form.Controls.Add(viewer);
                 form.ResumeLayout();
-                graph.FindNode(timestamps[i]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Red;
-                graph.FindNode(timestamps[i+1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Green;
-                //show the form 
+
+                graph.FindNode(timestamps[i]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Green;
+                graph.FindNode(timestamps[i]).LabelText = (i+1).ToString();
                 form.ShowDialog();
-                graph.FindNode(timestamps[i]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.White;
-                graph.FindNode(timestamps[i+1]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.White;
                 i++;
             }
-        }
-
-        public void FinalDraw(Graph _graph)
-        {
-            //create a form 
-            System.Windows.Forms.Form form = new System.Windows.Forms.Form();
-            //create a viewer object 
-            Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
-            //create a graph object 
-            Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
-            int i = timestamps.Count - 1;
-            while (i > 0)
-            {
-                if (!(timestamps[i].Equals(timestamps[i - 1], StringComparison.Ordinal)))
-                {
-                    graph.AddEdge(timestamps[i], timestamps[i - 1]).Attr.Color = Microsoft.Msagl.Drawing.Color.Green;
-                }
-                i--;
-            }
-            //bind the graph to the viewer 
-            viewer.Graph = graph;
-            //associate the viewer with the form 
-            form.SuspendLayout();
-            viewer.Dock = System.Windows.Forms.DockStyle.Fill;
-            form.WindowState = FormWindowState.Maximized;
-            form.Controls.Add(viewer);
-            form.ResumeLayout();
-            //show the form 
-            form.ShowDialog();
         }
     }
 }
