@@ -10,7 +10,6 @@ namespace TopologicalSort
         public BFS (Graph _G)
         {
             Graph G = _G;
-            Execute(G);
         }
 
         public void Execute(Graph _G)
