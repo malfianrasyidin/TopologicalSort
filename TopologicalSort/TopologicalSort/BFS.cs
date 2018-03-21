@@ -18,7 +18,8 @@ namespace TopologicalSort
             List<string> mkTanpaPrereq = new List<string>();
             int semesterSaatIni = 1;
             bool belumSelesai = true;
-            
+            Console.WriteLine("\n\nHasil Penyusunan Mata Kuliah dengan BFS");
+            Console.WriteLine("=======================================");
             do
             {
                 //cari ada kah yang matkulnya gak ada prereq
@@ -30,7 +31,7 @@ namespace TopologicalSort
                     }
                 } // didapatkan semua matkul yang gak ada prereq nya
                 // mengeluarkan isi dari mkTanpaPrereq
-                Console.WriteLine("Semester " + semesterSaatIni.ToString() + " :");
+                Console.WriteLine("\nSemester " + semesterSaatIni.ToString() + " :");
                 for (int i = 0; i < mkTanpaPrereq.Count(); i++)
                 {
                     Console.WriteLine(mkTanpaPrereq[i]);
@@ -69,7 +70,7 @@ namespace TopologicalSort
 
         public void Draw(Graph G, List<string>mkTanpaPrereq)
         {
-            System.Windows.Forms.Form form = new System.Windows.Forms.Form();
+            Form form = new Form();
             Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
             Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
             
@@ -87,7 +88,7 @@ namespace TopologicalSort
             }
             viewer.Graph = graph;
             form.SuspendLayout();
-            viewer.Dock = System.Windows.Forms.DockStyle.Fill;
+            viewer.Dock = DockStyle.Fill;
             form.WindowState = FormWindowState.Maximized;
             form.Controls.Add(viewer);
             form.ResumeLayout();

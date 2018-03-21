@@ -38,8 +38,12 @@ namespace TopologicalSort
                 string current = first_semester[i];
                 ExecuteDFS(_graph, current);
             }
+            Console.WriteLine("Hasil Penyusunan Mata Kuliah dengan DFS");
+            Console.WriteLine("=======================================");
             Draw(_graph);
+            DrawBox("Hasil Topological Sort dengan DFS");
             DrawResult(_graph);
+            DrawBox("BFS - Breadth First Search");
         }
 
         public void ExecuteDFS(Graph graph, string current)
@@ -142,7 +146,10 @@ namespace TopologicalSort
             System.Windows.Forms.Form form = new System.Windows.Forms.Form();
             Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
             Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
-
+            for (int i = 0; i < distinct.Count; i++)
+            {
+                Console.WriteLine("\nSemester {0} :\n{1}", i + 1, distinct[i]);
+            }
             for (int idx = 0; idx < distinct.Count-1 ; idx++)
             {
                 graph.AddEdge(distinct[idx], distinct[idx+1]).Attr.Color = Microsoft.Msagl.Drawing.Color.Green; ;
@@ -163,8 +170,6 @@ namespace TopologicalSort
             form.Controls.Add(viewer);
             form.ResumeLayout();
             form.ShowDialog();
-
-            DrawBox("BFS - Breadth First Seacrh");
         }
 
         public void DrawBox(string str)
