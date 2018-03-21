@@ -108,7 +108,7 @@ namespace TopologicalSort
             Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
             for (int i=0; i< Nodes.Count; i++)
             {
-                for (int j=0; j<Nodes[i].GetPostreqCount(); i++)
+                for (int j=0; j<Nodes[i].GetPostreqCount(); j++)
                 {
                     graph.AddEdge(Nodes[i].GetVal(), Nodes[i].GetPostreq(j));
                 }
@@ -116,6 +116,7 @@ namespace TopologicalSort
             viewer.Graph = graph; 
             form.SuspendLayout();
             viewer.Dock = System.Windows.Forms.DockStyle.Fill;
+            form.WindowState = FormWindowState.Maximized;
             form.Controls.Add(viewer);
             form.ResumeLayout();
             form.ShowDialog();

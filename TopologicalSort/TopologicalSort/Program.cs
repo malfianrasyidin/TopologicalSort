@@ -13,6 +13,7 @@ namespace TopologicalSort
             Graph G = new Graph();
             G = R.OpenFile();
             R.GeneratePostReq(G);
+            G.Draw();
 
             //Menggambar DFS
             DFS dfs = new DFS(G);
