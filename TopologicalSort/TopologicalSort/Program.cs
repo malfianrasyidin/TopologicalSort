@@ -8,24 +8,19 @@ namespace TopologicalSort
     {
         static void Main(string[] args)
         {
-            /* Baca File */
+            //Membaca File dan Inisialisasi Graph
             ReadFile R = new ReadFile("test.txt");
-            /* Print Graph */
             Graph G = new Graph();
             G = R.OpenFile();
             R.GeneratePostReq(G);
+
+            //Menggambar DFS
             DFS dfs = new DFS(G);
-            Console.WriteLine("--------");
             dfs.Execute(G);
-            
-            if (G.GetNodesCount()>0)
-            {
-                G.PrintGraph();
-            }
-            else
-            {
-                Console.WriteLine("Graf kosong");
-            }
+
+            //Menggambar BFS
+            BFS bfs = new BFS(G);
+            bfs.Execute(G);
         }
     }  
 }

@@ -23,8 +23,6 @@ namespace TopologicalSort
                 string[] stringPerLineComma = stringPerLineDot[0].Split(',');
                 for (int k = 0; k < stringPerLineComma.Length; k++)
                 {
-                    //string s = stringPerLineComma[k].Trim();
-                    //Console.WriteLine("Array ke-{0}, indeks node ke-{1}, valuenya {2}", k, i, s);
                     if (k == 0)
                     {
                         G.AddNodes(stringPerLineComma[k].Trim());
@@ -49,7 +47,6 @@ namespace TopologicalSort
                 {
                     //untuk setiap prereq, dimasukkin si node ke postreqnya
                     G.AddPostreqNodes(G.GetNodesIdx(G.GetNodes(i).GetPrereq(j)), (G.GetNodes(i).GetVal()));
-                    //Console.WriteLine("NYAMPE PLZZ");
                 }
             }
         }

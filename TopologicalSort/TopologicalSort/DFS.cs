@@ -116,7 +116,6 @@ namespace TopologicalSort
                 form.WindowState = FormWindowState.Maximized;
                 form.Controls.Add(viewer);
                 form.ResumeLayout();
-
                 graph.FindNode(timestamps[i]).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Green;
                 graph.FindNode(timestamps[i]).LabelText = (i+1).ToString();
                 form.ShowDialog();

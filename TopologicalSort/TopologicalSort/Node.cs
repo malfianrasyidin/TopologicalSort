@@ -45,7 +45,6 @@ namespace TopologicalSort
 
         public string GetPrereq(int Idx)
         {
-            /* Elemen list dimulai dari 0 */
             return Prereq[Idx];
         }
 
@@ -56,7 +55,6 @@ namespace TopologicalSort
 
         public string GetPostreq(int Idx)
         {
-            /* Elemen list dimulai dari 0 */
             return Postreq[Idx];
         }
 

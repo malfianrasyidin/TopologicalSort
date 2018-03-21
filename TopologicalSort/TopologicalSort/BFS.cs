@@ -15,11 +15,10 @@ namespace TopologicalSort
 
         public void Execute(Graph _G)
         {
-            //Graph G = _G;
             Graph G = new Graph(_G);
             List<string> mkTanpaPrereq = new List<string>();
             int semesterSaatIni = 1;
-            bool belumSelesai = true; //belum selesai = masih ada yang listnya gak kosong
+            bool belumSelesai = true;
             
             do
             {
@@ -33,13 +32,13 @@ namespace TopologicalSort
                 } // didapatkan semua matkul yang gak ada prereq nya
                 // mengeluarkan isi dari mkTanpaPrereq
                 Console.WriteLine("Semester " + semesterSaatIni.ToString() + " :");
-                for (int i = 0; i < mkTanpaPrereq.Count(); ++i)
+                for (int i = 0; i < mkTanpaPrereq.Count(); i++)
                 {
                     Console.WriteLine(mkTanpaPrereq[i]);
                 }
                 Draw(G, mkTanpaPrereq);
                 // semua prereq sudah dihapus
-                  //menghapus semua preReq yang mengandung mkTanpaPrereq
+                //menghapus semua preReq yang mengandung mkTanpaPrereq
                 for (int i = 0; i < mkTanpaPrereq.Count(); ++i)
                 {
                     for (int j = 0; j < G.GetNodesCount(); ++j)
@@ -71,13 +70,9 @@ namespace TopologicalSort
 
         public void Draw(Graph G, List<string>mkTanpaPrereq)
         {
-            //create a form 
             System.Windows.Forms.Form form = new System.Windows.Forms.Form();
-            //create a viewer object 
             Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
-            //create a graph object 
             Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
-            //create the graph content 
             
             for (int i = 0; i < mkTanpaPrereq.Count(); ++i)
             {
@@ -91,17 +86,13 @@ namespace TopologicalSort
                     graph.AddEdge(G.GetNodes(i).GetPrereq(j), G.GetNodes(i).GetVal());
                 }
             }
-            //bind the graph to the viewer 
             viewer.Graph = graph;
-            //associate the viewer with the form 
             form.SuspendLayout();
             viewer.Dock = System.Windows.Forms.DockStyle.Fill;
             form.WindowState = FormWindowState.Maximized;
             form.Controls.Add(viewer);
             form.ResumeLayout();
-            //show the form 
             form.ShowDialog();
         }
-
     }
 }
